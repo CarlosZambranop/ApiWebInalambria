@@ -55,14 +55,22 @@ builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
    .AddNegotiate();
 
 var app = builder.Build();
-
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Converter API v1"));
+}
+else
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
+}
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
